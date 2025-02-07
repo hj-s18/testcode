@@ -1,0 +1,20 @@
+version: '3'
+services:
+  was:
+    build: .  # 현재 디렉토리의 Dockerfile을 사용해 빌드
+    image: gunicorntest:latest
+    ports:
+      - "5000:5000"  # 호스트의 5000포트를 컨테이너의 5000포트에 연결
+    volumes:
+      - ./app.py:/app/app.py  # 로컬의 app.py를 컨테이너의 /app/app.py에 마운트
+      - was_logs:/app/logs    # Docker 관리 볼륨 (예: 로그 저장소)
+    env_file:
+      - .env
+    networks:
+      - mynet  # 명시적으로 mynet 네트워크에 연결
+
+volumes:
+  was_logs:  # was 서비스의 관리 볼륨 정의
+
+networks:
+  mynet:
